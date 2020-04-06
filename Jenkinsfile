@@ -1,8 +1,9 @@
+@Library('PipeLineScript_With_SharedLibrary')_
 pipeline {
     agent any
 	parameters {
     string(name: 'BRANCH_SPECIFIER', defaultValue: 'master', description: 'The branch that will be built.')
-    choice(name: 'PROJECT_NAME', choices: 'SimpleMavenProject.git', description: 'Name of the Git project being built (ex: common).')
+    choice(name: 'PROJECT_NAME', choices: 'SimpleMavenProject', description: 'Name of the Git project being built (ex: common).')
   }
 	tools {
         maven 'maven-3.6.0'
@@ -10,7 +11,7 @@ pipeline {
     stages{
        stage('checkout'){
            steps{
-               git branch: "${params.BRANCH_SPECIFIER}", url: "https://github.com/mamta-soni93/${params.PROJECT_NAME}", credentialsId: "ce9d179a-861f-42a8-8e4e-4ec203262f9b"
+			checkoutProject("${params.BRANCH_SPECIFIER}","${params.PROJECT_NAME}","ce9d179a-861f-42a8-8e4e-4ec203262f9b")
            }
       }
       stage('Maven Build'){
